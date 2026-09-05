@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0b0d14">
+<title>消失的父親節 — 視覺小說（完整版）</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-tc@latest/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-tc@latest/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-serif-tc@latest/700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@latest/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@latest/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tc@latest/700.css">
+<style>
+:root{ --gold:#d8b36a; --gold-dim:rgba(216,179,106,.35); }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#000;overflow:hidden}
+body{font-family:'Noto Serif TC',serif;color:#e9e6de;user-select:none;touch-action:manipulation}
+button{font-family:'Noto Sans TC',sans-serif;cursor:pointer}
+#stage{position:fixed;inset:0;background:radial-gradient(120% 90% at 50% 10%,#141a26 0%,#07090f 70%);overflow:hidden}
+#stage.shake{animation:shk .55s ease}
+@keyframes shk{0%,100%{transform:translate(0,0)}15%{transform:translate(-10px,4px)}30%{transform:translate(9px,-5px)}45%{transform:translate(-7px,3px)}60%{transform:translate(6px,-3px)}75%{transform:translate(-4px,2px)}90%{transform:translate(3px,-1px)}}
+.bgLayer{position:absolute;inset:-3%;background-size:cover;background-position:center;opacity:0;transition:opacity 1.1s ease}
+.bgLayer.on{opacity:1;animation:kenb 30s ease-in-out infinite alternate}
+@keyframes kenb{from{transform:scale(1)}to{transform:scale(1.06) translate(-.5%,-.3%)}}
+@media (prefers-reduced-motion: reduce){.bgLayer.on{animation:none}}
+#stage.sepia .bgLayer{filter:sepia(.38) brightness(.94) contrast(1.02)}
+#vignette{position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(120% 95% at 50% 45%,transparent 55%,rgba(0,0,0,.42) 100%)}
+#spriteLayer{position:absolute;inset:0;pointer-events:none;z-index:3}
+img.sprite{position:absolute;bottom:-2.5%;height:90%;width:auto;transform:translateX(-50%) translateY(14px);opacity:0;transition:opacity .32s ease,transform .32s ease,filter .28s ease;filter:drop-shadow(0 10px 20px rgba(0,0,0,.45));will-change:opacity,transform}
+img.sprite.on{opacity:1;transform:translateX(-50%) translateY(0)}
+img.sprite.dim{opacity:.45;filter:brightness(.7) saturate(.85) drop-shadow(0 10px 20px rgba(0,0,0,.45))}
+img.sprite.pos-l{left:24%}img.sprite.pos-c{left:50%}img.sprite.pos-r{left:76%}
+img.sprite.multiply{mix-blend-mode:multiply}
+#fxDark{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1s ease;pointer-events:none;z-index:4}
+#cardLayer{position:absolute;inset:0;pointer-events:none;z-index:5;display:flex;justify-content:center;align-items:flex-start}
+#postcard{position:relative;margin-top:5.5vh;width:min(46vw,420px);background:#f3ecdd;padding:10px 10px 12px;transform:rotate(-2.6deg) translateY(-14px);box-shadow:0 18px 50px rgba(0,0,0,.65);opacity:0;transition:opacity .7s ease,transform .7s ease;border:1px solid #d9cfb8}
+#postcard.on{opacity:1;transform:rotate(-2.6deg) translateY(0)}
+#postcard img{width:100%;display:block}
+.pc-stamp{position:absolute;top:16px;right:16px;width:44px;height:52px;border:2px dashed #a3452f;color:#a3452f;font-family:'Noto Sans TC';font-size:9px;display:flex;align-items:center;justify-content:center;transform:rotate(6deg);background:rgba(255,255,255,.75);letter-spacing:.08em}
+#pcCap{margin-top:8px;text-align:center;color:#5c5138;font-size:clamp(10px,1.5vh,13px);letter-spacing:.28em;font-family:'Noto Sans TC'}
+#cgLayer{position:absolute;inset:0;background:rgba(0,0,0,.94);z-index:6;display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .5s ease}
+#cgLayer.on{opacity:1;pointer-events:auto}
+#cgLayer img{max-width:92%;max-height:82%;border:6px solid #f3ecdd}
+.cgHint{margin-top:14px;color:var(--gold);font-size:12px;letter-spacing:.3em;font-family:'Noto Sans TC';animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:.9}}
+#chapterCard{position:absolute;inset:0;z-index:7;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;background:radial-gradient(90% 90% at 50% 50%,rgba(10,12,20,.92),rgba(0,0,0,.97));opacity:0;transition:opacity .45s ease}
+#chapterCard.show{opacity:1}
+#chNum{color:var(--gold);font-size:clamp(13px,2.4vh,18px);letter-spacing:.6em;font-family:'Noto Sans TC'}
+#chTitle{color:#efe9da;font-size:clamp(26px,6vh,52px);letter-spacing:.3em;font-weight:600;text-shadow:0 0 30px rgba(216,179,106,.25)}
+.chLine{width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+#choiceLayer{position:absolute;inset:0;z-index:8;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.5);backdrop-filter:blur(2px)}
+#choicePrompt{font-size:clamp(14px,2.5vh,20px);color:#f0ead9;margin-bottom:12px;letter-spacing:.12em}
+.choiceBtn{width:min(82%,580px);background:rgba(16,18,28,.88);border:1px solid var(--gold-dim);color:#e9e2cf;padding:14px 22px;font-size:clamp(13px,2.1vh,17px);border-radius:8px;transition:.2s;letter-spacing:.06em;font-family:'Noto Serif TC'}
+.choiceBtn:hover{background:rgba(216,179,106,.16);border-color:var(--gold);transform:translateY(-2px)}
+#chatLayer{position:absolute;inset:0;z-index:9;display:none;align-items:center;justify-content:center;background:rgba(4,6,10,.62)}
+#chatBox{width:min(92%,620px);height:min(66vh,560px);background:#101319;border:1px solid rgba(255,255,255,.14);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.7)}
+#chatHead{padding:12px 18px;background:#181c26;border-bottom:1px solid rgba(255,255,255,.08);font-family:'Noto Sans TC';font-size:14px;color:#cfd3e0;letter-spacing:.1em}
+#chatBody{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:10px}
+.bubble{max-width:78%;padding:10px 14px;border-radius:12px;font-size:clamp(13px,2vh,16px);line-height:1.7;animation:pop .25s ease;font-family:'Noto Sans TC'}
+.bubble .bw{display:block;font-size:10px;opacity:.55;margin-bottom:3px;letter-spacing:.15em}
+.bubble.him{align-self:flex-start;background:#232a38;color:#dfe4ee;border-bottom-left-radius:4px}
+.bubble.me{align-self:flex-end;background:#3d5a43;color:#eef4ea;border-bottom-right-radius:4px}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+#chatHint{padding:10px;text-align:center;font-size:11px;color:var(--gold);letter-spacing:.25em;font-family:'Noto Sans TC';animation:blink 1.4s infinite}
+#textBox{position:absolute;left:50%;bottom:2.4vh;transform:translateX(-50%);width:min(94%,1080px);min-height:clamp(118px,21vh,200px);background:linear-gradient(180deg,rgba(14,16,26,.9),rgba(8,9,16,.94));border:1px solid rgba(216,179,106,.28);border-radius:10px;padding:clamp(16px,2.6vh,28px) clamp(18px,3vw,42px);box-shadow:0 12px 44px rgba(0,0,0,.55);z-index:10;display:none}
+#textBox::before{content:'';position:absolute;top:0;left:26px;right:26px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.7}
+#namePlate{position:absolute;top:-17px;left:26px;background:linear-gradient(135deg,#6b5327,#d8b36a);color:#171106;font-weight:700;padding:4px 22px;border-radius:4px;font-family:'Noto Sans TC';letter-spacing:.18em;font-size:clamp(12px,1.9vh,15px);box-shadow:0 4px 14px rgba(0,0,0,.5);display:none}
+#textArea{font-size:clamp(15px,2.35vh,20px);line-height:2;letter-spacing:.05em;min-height:4em;color:#e9e6de;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+#textArea.narr{color:#c9cfdd}
+#textArea.inner{color:#a9b0c8}
+#textArea.quote{color:#e8d9b0}
+#contArrow{position:absolute;right:20px;bottom:10px;color:var(--gold);font-size:14px;opacity:0;animation:bob 1s infinite}
+#contArrow.on{opacity:1}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+#hud{position:absolute;top:14px;right:16px;display:flex;gap:8px;z-index:20}
+.hbtn{background:rgba(15,17,26,.62);border:1px solid rgba(255,255,255,.18);color:#cfd3e0;padding:6px 13px;border-radius:999px;font-size:12px;transition:.2s;letter-spacing:.08em}
+.hbtn:hover{border-color:var(--gold);color:var(--gold)}
+.hbtn.active{background:rgba(216,179,106,.22);border-color:var(--gold);color:#f0dfb6}
+#musicNote{position:absolute;left:16px;bottom:12px;font-size:11px;color:rgba(216,179,106,.75);letter-spacing:.15em;font-family:'Noto Sans TC';z-index:11;pointer-events:none}
+#settings{position:absolute;top:52px;right:16px;z-index:25;background:rgba(12,14,22,.94);border:1px solid rgba(216,179,106,.3);border-radius:10px;padding:16px 18px;display:none;flex-direction:column;gap:12px;font-family:'Noto Sans TC';font-size:13px;color:#d8d4c8}
+#settings label{display:flex;align-items:center;gap:10px}
+#settings input[type=range]{width:150px;accent-color:var(--gold)}
+#logPanel{position:absolute;top:0;right:0;bottom:0;width:min(430px,92%);background:rgba(10,12,18,.97);border-left:1px solid rgba(216,179,106,.3);z-index:25;transform:translateX(105%);transition:transform .3s ease;display:flex;flex-direction:column}
+#logPanel.on{transform:translateX(0)}
+#logHead{padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;font-family:'Noto Sans TC';letter-spacing:.2em;color:var(--gold)}
+#logClose{background:none;border:1px solid rgba(255,255,255,.25);color:#ccc;border-radius:6px;padding:2px 10px}
+#logBody{flex:1;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:10px;font-size:13.5px;line-height:1.8}
+.logName{font-family:'Noto Sans TC';font-weight:700;margin-right:8px}
+#titleScreen{position:absolute;inset:0;z-index:40;background-color:#0a0d15;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;transition:opacity 1s ease}
+#titleScreen::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,12,.55) 0%,rgba(5,7,12,.25) 45%,rgba(5,7,12,.88) 100%)}
+#titleScreen.gone{opacity:0;pointer-events:none}
+.ts-inner{position:relative;text-align:center;padding:20px;animation:fadeUp 1.4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.ts-tag{font-family:'Noto Sans TC';color:var(--gold);letter-spacing:.55em;font-size:clamp(10px,1.7vh,13px);margin-bottom:14px}
+.ts-inner h1{font-size:clamp(40px,9.5vh,84px);letter-spacing:.22em;font-weight:700;color:#f2ecdc;text-shadow:0 4px 30px rgba(0,0,0,.8),0 0 60px rgba(216,179,106,.2);margin-bottom:16px}
+.ts-sub{font-size:clamp(12px,2.2vh,17px);color:#cfc8b6;letter-spacing:.14em;margin-bottom:40px}
+.ts-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.ts-btns button{background:rgba(14,16,24,.75);border:1px solid var(--gold-dim);color:#efe6cd;padding:12px 34px;font-size:clamp(14px,2.3vh,18px);letter-spacing:.3em;border-radius:6px;transition:.25s}
+.ts-btns button:hover{border-color:var(--gold);background:rgba(216,179,106,.18)}
+.ts-note{margin-top:34px;font-size:clamp(10px,1.6vh,12px);color:rgba(230,225,210,.55);letter-spacing:.12em;line-height:2;font-family:'Noto Sans TC'}
+.ts-hint{margin-top:10px;font-size:11px;color:rgba(216,179,106,.8);letter-spacing:.2em;font-family:'Noto Sans TC';animation:blink 1.6s infinite}
+#gallery{position:absolute;inset:0;z-index:42;background:rgba(5,7,12,.97);display:none;flex-direction:column}
+#galHead{padding:18px 22px;border-bottom:1px solid rgba(216,179,106,.25);display:flex;justify-content:space-between;align-items:center;font-family:'Noto Sans TC';letter-spacing:.25em;color:var(--gold)}
+#galGrid{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;padding:20px}
+.galItem{background:#12151f;border:1px solid rgba(255,255,255,.12);border-radius:8px;overflow:hidden;cursor:pointer;transition:.2s}
+.galItem:hover{border-color:var(--gold)}
+.galItem img{width:100%;height:130px;object-fit:cover;display:block}
+.galLock{width:100%;height:130px;display:flex;align-items:center;justify-content:center;background:#0a0c12;color:#4a4f60;font-size:22px;letter-spacing:.3em}
+.galName{padding:8px 10px;font-size:12px;font-family:'Noto Sans TC';letter-spacing:.1em;color:#d8d4c8;text-align:center}
+.galItem.locked{opacity:.55;cursor:default}
+#galView{position:absolute;inset:0;z-index:43;background:rgba(0,0,0,.93);display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+#galView img{max-width:90%;max-height:78%;border:5px solid #f3ecdd}
+#galViewCap{color:var(--gold);letter-spacing:.2em;font-family:'Noto Sans TC';font-size:13px}
+#endScreen{position:absolute;inset:0;z-index:41;background:#04050a;display:none;align-items:center;justify-content:center;overflow:hidden}
+.es-inner{max-width:min(88%,760px);text-align:center;padding:20px}
+.endline{opacity:0;font-size:clamp(14px,2.5vh,20px);line-height:2.1;letter-spacing:.08em;color:#cfd0da;animation:eline 1.4s ease forwards}
+@keyframes eline{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.es-end{opacity:0;margin-top:34px;font-size:clamp(26px,5.4vh,44px);letter-spacing:.4em;color:var(--gold);font-weight:700;animation:eline 2s ease forwards}
+.es-note{opacity:0;margin-top:26px;font-size:clamp(11px,1.8vh,14px);color:rgba(210,205,190,.6);line-height:2.1;letter-spacing:.06em;animation:eline 2s ease forwards;font-family:'Noto Sans TC'}
+.es-btns{opacity:0;margin-top:30px;display:flex;gap:14px;justify-content:center;animation:eline 2s ease forwards}
+.es-btns button{background:rgba(14,16,24,.8);border:1px solid var(--gold-dim);color:#efe6cd;padding:10px 30px;letter-spacing:.25em;border-radius:6px}
+.es-btns button:hover{border-color:var(--gold)}
+#loading{position:absolute;inset:0;z-index:50;background:#07090f;display:flex;align-items:center;justify-content:center;transition:opacity .7s ease}
+#loading.off{opacity:0;pointer-events:none}
+.ld-inner{text-align:center;width:min(80%,420px)}
+.ld-title{font-size:clamp(22px,4.5vh,34px);letter-spacing:.4em;color:#e9e2cf;margin-bottom:8px}
+.ld-sub{font-size:11px;color:rgba(216,179,106,.7);letter-spacing:.3em;margin-bottom:26px;font-family:'Noto Sans TC'}
+.ld-bar{height:3px;background:rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+#ldFill{height:100%;width:0;background:linear-gradient(90deg,#8a6a2f,var(--gold));transition:width .3s ease}
+#ldText{margin-top:14px;font-size:11px;color:#8b8fa0;letter-spacing:.2em;font-family:'Noto Sans TC'}
+#ldSkip{margin-top:18px;display:none;background:none;border:1px solid rgba(216,179,106,.5);color:var(--gold);padding:8px 26px;border-radius:6px;letter-spacing:.2em;font-size:12px}
+@media (max-width:760px){
+ img.sprite{height:62%}
+ img.sprite.pos-l{left:27%}img.sprite.pos-r{left:73%}
+ #postcard{width:62vw}
+ #hud .hbtn{padding:5px 9px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bgLayer" id="bgA"></div>
+  <div class="bgLayer" id="bgB"></div>
+  <div id="vignette"></div>
+  <div id="spriteLayer"></div>
+  <div id="fxDark"></div>
+  <div id="cardLayer"><div id="postcard"><div class="pc-stamp">AIR MAIL</div><img id="pcImg" alt="postcard"><div id="pcCap">CAMBODIA ・ 高棉的微笑</div></div></div>
+  <div id="cgLayer"><img id="cgImg" alt="cg"><div class="cgHint">點 擊 繼 續</div></div>
+  <div id="chapterCard"><div id="chNum"></div><div class="chLine"></div><div id="chTitle"></div></div>
+  <div id="choiceLayer" data-ui><div id="choicePrompt"></div><div id="choiceBtns" style="display:flex;flex-direction:column;gap:14px;align-items:center"></div></div>
+  <div id="chatLayer" data-ui><div id="chatBox"><div id="chatHead">訊息 ・ 陳志偉</div><div id="chatBody"></div><div id="chatHint">點擊顯示訊息 ▼</div></div></div>
+  <div id="textBox"><div id="namePlate"></div><div id="textArea"></div><div id="contArrow">▼</div></div>
+  <div id="hud" data-ui>
+    <button class="hbtn" id="btnAuto">自動</button>
+    <button class="hbtn" id="btnSkip">快進</button>
+    <button class="hbtn" id="btnLog">記錄</button>
+    <button class="hbtn" id="btnSet">♪ 設定</button>
+    <button class="hbtn" id="btnTitle">標題</button>
+  </div>
+  <div id="settings" data-ui>
+    <label>主音量 <input type="range" id="volRange" min="0" max="100" value="80"></label>
+    <label><input type="checkbox" id="chkMusic" checked> 背景配樂</label>
+    <label><input type="checkbox" id="chkSfx" checked> 音效</label>
+  </div>
+  <div id="logPanel" data-ui><div id="logHead">劇 情 記 錄 <button id="logClose">✕</button></div><div id="logBody"></div></div>
+  <div id="musicNote"></div>
+  <div id="titleScreen" data-ui>
+    <div class="ts-inner">
+      <div class="ts-tag">視覺小說 ・ VISUAL NOVEL</div>
+      <h1>消失的父親節</h1>
+      <div class="ts-sub">—— 那張明信片上的微笑，嘴角似乎是往下垂的。</div>
+      <div class="ts-btns"><button id="btnStart">開始遊戲</button><button id="btnContinue" style="display:none">繼續遊戲</button><button id="btnGallery">CG 鑑賞</button></div>
+      <div class="ts-note">改編自同名短篇小說｜建議開啟聲音遊玩<br>本作涉及家暴、婚外情與人口販運暗示等嚴肅議題</div>
+      <div class="ts-hint">（ 點 擊 任 意 處 開 啟 配 樂 ）</div>
+    </div>
+  </div>
+  <div id="gallery" data-ui><div id="galHead">CG 鑑 賞 <button id="galClose">✕</button></div><div id="galGrid"></div></div>
+  <div id="galView" data-ui><img id="galViewImg" alt=""><div id="galViewCap"></div></div>
+  <div id="endScreen" data-ui></div>
+  <div id="loading"><div class="ld-inner"><div class="ld-title">消失的父親節</div><div class="ld-sub">LOADING ・ 立繪去背與場景載入中</div><div class="ld-bar"><div id="ldFill"></div></div><div id="ldText">載入資源中… 0%</div><button id="ldSkip">跳過載入直接進入</button></div></div>
+</div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const stage=$('stage');
+const store={get(k){try{return localStorage.getItem(k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
+/* ============ 資源 ============ */
+const P='https://image.qwenlm.ai/public_source/071bf77c-d8e2-4435-8e6a-7638f7be31e5/';
+const IMGS={
+ shufen_n:P+'17899dca6-6420-447b-9198-f7ad2712d4e6.png',
+ shufen_s:P+'186dffb68-3ac0-44a3-bc2c-6f50c158143e.png',
+ shufen_a:P+'1cbf58873-ab6c-47e7-a43b-24216393906e.png',
+ shufen_w:P+'1bd87ebad-e796-404e-8ae2-2f851e86e34a.png',
+ son_h:P+'18ff3c4a9-7cfb-4e67-a1df-a115ea707258.png',
+ son_s:P+'18a680372-2003-46d7-a669-abbbc089325b.png',
+ son_e:P+'10ae43f3f-c127-4059-83f0-29854ad48108.png',
+ ex_rich:P+'19222d6eb-8446-4431-b772-898446a80a6e.png',
+ ex_poor:P+'1cc430856-823c-40d4-9d26-f80c2a04d96e.png',
+ mil:P+'12e257f66-325c-43c5-b0bb-835feb6c20c8.png',
+ acc:P+'192dab43e-a132-4133-8946-3fdd232a60c0.png',
+ acc_w:P+'17469f91c-4fd3-4c51-b08b-b662fd3e42d4.png',
+ home_m:P+'1986aad03-d052-4b7e-af07-13aba9d93dd4.png',
+ old_home:P+'18bce5e18-3ed5-4efa-a65e-f16bdef688b2.png',
+ cafe:P+'1a86dbd09-9d45-4a79-8503-6ce5ab222d39.png',
+ home_n:P+'1beef53d1-c58a-44dc-9d71-e7f9435e949c.png',
+ study:P+'131ba484f-f5d6-44f5-82fc-656681d4c928.png',
+ parents_home:P+'1bb622afe-113f-446d-8f10-6542435d7e72.png',
+ factory:P+'1452c9ce2-2928-4d22-8fa6-0c68d075a9e2.png',
+ resto:P+'18942e2cd-0d0d-4cda-96da-f364076faf37.png',
+ bayon:P+'1a931af98-e9bf-4258-a452-e67b84179c1c.png',
+ angkor2:P+'1178f5542-b9f6-42fd-93a1-d5912525def9.png',
+ cg_dinner:P+'16ec236e4-6a31-4446-b2f8-a94e8346870e.png',
+ cg_money:P+'188872062-7a14-4881-bce0-6539f1316064.png',
+ cg_tian:P+'1397fc9c2-39ad-4421-87b6-a18282feb375.png',
+ title:P+'1de9ea829-da77-4b46-9a72-5479f579d39e.png'
+};
+const SPRITE_IDS=['shufen_n','shufen_s','shufen_a','shufen_w','son_h','son_s','son_e','ex_rich','ex_poor','mil','acc','acc_w'];
+const BGS={home_m:IMGS.home_m,old_home:IMGS.old_home,cafe:IMGS.cafe,home_n:IMGS.home_n,study:IMGS.study,parents_home:IMGS.parents_home,factory:IMGS.factory,resto:IMGS.resto};
+const GRADS={
+ home_m:'linear-gradient(180deg,#f7d9a8 0%,#e8b877 45%,#a8795a 100%)',
+ old_home:'linear-gradient(180deg,#6b5a48 0%,#4a3c30 60%,#2e241c 100%)',
+ cafe:'linear-gradient(180deg,#e8c9a0 0%,#b98d63 55%,#6e4f38 100%)',
+ home_n:'linear-gradient(180deg,#2c3550 0%,#1f2438 55%,#12141f 100%)',
+ study:'linear-gradient(180deg,#232c44 0%,#171c2e 60%,#0c0e18 100%)',
+ parents_home:'linear-gradient(180deg,#f2d8ae 0%,#d9a86f 50%,#8a5f43 100%)',
+ factory:'linear-gradient(180deg,#c98d63 0%,#7d6a58 55%,#3a3733 100%)',
+ resto:'linear-gradient(180deg,#f0b98a 0%,#c07a52 50%,#6e3a2a 100%)'
+};
+const WHO_COLORS={'淑芬':'#d8b36a','小杰':'#8fd0ff','志偉':'#b79cff','婆婆':'#ff9d8a','美玲':'#ff9ec6'};
+const WHO_SPRITE={'淑芬':['shufen_n','shufen_s','shufen_a','shufen_w'],'小杰':['son_h','son_s','son_e'],'志偉':['ex_rich','ex_poor'],'婆婆':['mil'],'美玲':['acc','acc_w']};
+const CHAR_OF={};
+for(const nm in WHO_SPRITE){for(const sid of WHO_SPRITE[nm])CHAR_OF[sid]=nm;}
+const MUSIC_NAMES={title:'主題・消失的父親節',daily:'日常・小小的幸福',memory:'回憶・潮濕的夏天',hope:'新生・重新開始',tension:'不安・海的那一邊',ending:'尾聲・下垂的微笑'};
+const CG_LIST=[
+ {id:'cg_dinner',name:'八八節的團圓飯'},
+ {id:'cg_money',name:'三千塊的治裝費'},
+ {id:'cg_tian',name:'天哥的照片'},
+ {id:'bayon',name:'明信片・高棉的微笑'},
+ {id:'angkor2',name:'明信片・吳哥窟的落日'}
+];
+/* ============ 劇本 ============ */
+const T=(who,txt,o={})=>Object.assign({t:'text',who,txt},o);
+const N=txt=>({t:'text',txt,narr:true});
+const I=txt=>({t:'text',who:'淑芬',txt,inner:true});
+const Q=txt=>({t:'text',txt,quote:true});
+const BG=id=>({t:'bg',id});
+const M=id=>({t:'bgm',id});
+const S=(id,pos)=>({t:'show',id,pos});
+const H=id=>({t:'hide',id});
+const CH=(n,s)=>({t:'chapter',n,s});
+const CHOICE=(prompt,opts)=>({t:'choice',prompt,opts});
+const CARD=(on,img,cap)=>({t:'card',on,img,cap});
+const CHAT=msgs=>({t:'chat',msgs});
+const FX=k=>({t:'fx',k});
+const SFX=k=>({t:'sfx',k});
+const CG=id=>({t:'cg',id});
+const SCRIPT=[
+ {t:'fx',k:'black'},
+ CH('序章','八月的第二個星期日'),
+ N('八月。蟬鳴把整個城市吵得發燙。'),
+ N('對大多數人來說，這只是眾多假日中普通的一天。'),
+ N('但對淑芬的兒子而言，這是一年之中，最重要的一天——'),
+ N('父親節。'),
+ CH('第一章','父親節的早晨'),
+ BG('home_m'),FX('clear'),M('daily'),
+ S('shufen_n','l'),
+ N('清晨六點半，陽光穿過薄簾，在木地板上灑了一條金色的路。'),
+ N('廚房裡的水還沒燒開，一個小小的身影就已經揹著背包，在客廳裡轉來轉去。'),
+ S('son_e','r'),
+ T('小杰','媽——我起床了喔！今天我是自己起床的！'),
+ T('淑芬','這麼早……鬧鐘都還沒響呢。'),
+ T('小杰','因為今天要跟爸爸吃飯啊！我要第一個把獎狀拿給爸爸看！'),
+ N('小杰把背包放在桌上，像拆禮物一樣，小心翼翼地把裡面的東西一樣一樣擺出來。'),
+ N('一張摺得整整齊齊的比賽獎狀。一張畫了三個晚上、用蠟筆塗滿顏色的父親節卡片。'),
+ T('小杰','媽媽妳看！卡片裡面我畫了我們三個人，手牽手！爸爸一定會很高興吧？'),
+ T('淑芬','……嗯。爸爸一定會很高興的。'),
+ I('（明明那麼討厭那個人……可是，我不能剝奪孩子擁有父親的權利。）'),
+ I('（至少今天……讓他當一天的好爸爸吧。）'),
+ T('小杰','那我去換衣服！媽媽妳快一點喔！'),
+ H('son_e'),
+ N('看著兒子雀躍的背影，淑芬胸口某個結，又被輕輕扯了一下。'),
+ N('那些她以為早就忘掉的事情，總會在这种日子，自己浮上來。'),
+ I('（剛嫁進去的那段日子……也是這樣的夏天。）'),
+ CH('第二章','走不出去的門'),
+ BG('old_home'),M('memory'),
+ S('shufen_w','l'),S('mil','r'),
+ N('剛嫁進陳家的時候，淑芬以為，婚姻是另一段人生的開始。'),
+ N('很快她就明白了——在這個家裡，她只是多了一雙幹活的手。'),
+ T('婆婆','地拖成這個樣子，妳是沒長眼睛嗎？'),
+ T('婆婆','菜鹹成這樣，是想鹹死我們陳家的人是不是？'),
+ N('不管淑芬怎麼做牛做馬，從清晨忙到深夜，都換不來一句好話。'),
+ N('就算她為陳家生下了長孫，在家裡的地位，也還不如門口那條會搖尾巴的狗。'),
+ N('而志偉——她的丈夫，從頭到尾，沒有幫她說過一句話。'),
+ S('ex_rich','c'),
+ T('志偉','媽說的話，妳聽一聽就好了，別老是頂嘴。'),
+ H('ex_rich'),
+ N('原本美麗的外表，在婚姻的摧殘下，變得越來越憔悴。'),
+ N('娘家人每次來看她，都紅了眼眶，常常勸她考慮放棄這段婚姻。'),
+ N('妹妹握著她的手：「姐，妳看看妳自己……這還是當初那個會站在台上唱歌的淑芬嗎？」'),
+ I('（再忍一下。為了小杰，再忍一下……）'),
+ CHOICE('——如果是你，會怎麼勸自己？',[
+  {t:'「再忍一次……他總有一天會回頭的。」',br:[I('（我總以為，再努力一點、再乖一點，他終究會回頭看我一眼。）')]},
+  {t:'「聽家人的話，就此放手吧。」',br:[I('（我無數次想過要放手……可是每當小杰抓著我的衣角喊媽媽，那句話就怎麼也說不出口。）')]}
+ ]),
+ N('淑芬一點也不願放手。為了兒子，也為了自己的不甘心。'),
+ N('她相信，丈夫終究會跟她站在同一陣線。'),
+ N('直到那一天——'),
+ N('直到一記重拳，把她狠狠打醒。'),
+ FX('shake'),SFX('hit'),
+ CH('第三章','那位「客人」'),
+ M('tension'),
+ N('那個下午，淑芬剛接小杰放學回家，就聞到廚房裡難得的飯菜香。'),
+ T('婆婆','今天有客人要來，我煮了一大桌。妳還杵在那裡幹什麼，快進來幫忙！'),
+ N('淑芬放下書包，急忙圍上圍裙。鍋鏟、碗盤、滾燙的湯——她太熟悉這一切了。'),
+ N('門鈴響了。'),
+ SFX('bell'),
+ N('玄關傳來志偉的笑聲，還有一個陌生女人的聲音。'),
+ H('shufen_w'),H('mil'),
+ S('ex_rich','c'),S('acc','r'),S('mil','l'),
+ N('志偉挽著一個年輕火辣的女孩子走了進來。女孩妝容精緻，裙擺短得刺眼。'),
+ T('婆婆','來來來，這是公司新請的會計小姐，美玲。今天特別請她來家裡吃頓飯！'),
+ T('美玲','嫂子好～常常聽志偉哥提起妳呢。哇，這一桌菜好香喔～'),
+ N('婆婆臉上的笑，比過去十年加起來還要多。'),
+ N('淑芬站在廚房門口，手裡還端著一碗湯。那一刻她忽然覺得——自己才是這個家裡的客人。'),
+ H('acc'),H('mil'),S('shufen_w','l'),
+ N('從那天起，「會計小姐」開始跟志偉出雙入對。'),
+ N('公司員工的耳語越滾越大，像漲了水的陰溝，捂都捂不住。'),
+ N('最後，是一位看不下去的貨運司機，把所有事情通通告訴了淑芬。'),
+ N('她決定攤牌。'),
+ T('淑芬','我們重新來過，好不好？我會付一筆不小的資遣費給美玲，讓她離開。這個家……可以重新開始。'),
+ T('志偉','……重新開始？'),
+ T('志偉','淑芬，我們離婚吧。'),
+ FX('shake'),SFX('hit'),
+ N('六個字，比廚房裡滾燙的湯還燙，燙得淑芬整個人都在發抖。'),
+ S('mil','r'),
+ T('婆婆','早就該離了！看看妳自己那個樣子，再看看美玲——她才是我們陳家要的媳婦！'),
+ N('婆婆一口一句「缺點」，把這些年的嫌惡，一次倒得乾乾淨淨。'),
+ H('mil'),
+ N('奇怪的是，淑芬反而平靜了下來。心冷到極處，原來是這個感覺。'),
+ S('shufen_s','l'),
+ T('淑芬','好。房子、存款、公司……我什麼都不要。'),
+ T('淑芬','我只要小杰的撫養權。還有——請你以後，常常來看他。'),
+ T('志偉','那是當然。'),
+ H('ex_rich'),
+ N('他高興地答應了，就像答應一件再輕鬆不過的小事。'),
+ CH('第四章','重啟'),
+ BG('parents_home'),M('hope'),
+ S('shufen_n','l'),
+ N('離婚不久，會計小姐風風光光地成了第二任媳婦。'),
+ N('而淑芬帶著小杰搬回娘家，重新回到久違的職場上打拼。'),
+ N('白天上班，晚上帶孩子。爸媽跟妹妹輪流幫忙，日子忙碌得像陀螺——'),
+ N('可是，她久違地覺得開心。'),
+ N('臉上的魚尾紋，彷彿都隨著那些不好的回憶一起消失了。'),
+ N('她也跟前夫留下了一個約定。'),
+ S('ex_rich','r'),
+ T('淑芬','贍養費，我一分錢都不會要。但是——每年的父親節，你一定要跟小杰團聚。'),
+ T('志偉','……行吧。'),
+ H('ex_rich'),
+ N('在兒子面前，志偉總是演一副好爸爸的模樣。'),
+ N('可一回到家，他就向新妻抱怨個不停。最後，他乾脆連敷衍都省了。'),
+ CHAT([
+  {w:'志偉',t:'今年父親節我不想去了。'},
+  {w:'志偉',t:'妳自己想辦法跟小杰交代。'}
+ ]),
+ N('然而，淑芬從其他人口中聽到的，卻是另一個版本的消息——'),
+ M('memory'),
+ BG('factory'),
+ S('acc_w','c'),
+ N('前夫再婚後，家裡的情況一落千丈。'),
+ N('工廠因為訂單減少，快要營運不下去了。'),
+ N('所有的好運氣，似乎都隨著淑芬的離去而消失了。'),
+ N('當年那位美麗的會計小姐，如今也變得相當憔悴。'),
+ H('acc_w'),
+ N('不久後，淑芬在外面的咖啡廳，約了前夫聊一聊。'),
+ CH('第五章','咖啡廳'),
+ BG('cafe'),M('memory'),
+ S('shufen_s','l'),
+ N('午後的咖啡廳，人不多。淑芬選了靠窗的位置，咖啡涼了半杯。'),
+ N('門上的鈴鐺響了。'),
+ SFX('bell'),
+ N('一個衣衫骯髒的中年男子推門走了進來，四處張望。'),
+ N('如果不是那雙眼睛——淑芬幾乎認不出，這是曾經意氣風發的工廠小開。'),
+ S('ex_poor','r'),
+ T('淑芬','你現在……怎麼變成這個樣子了？'),
+ T('志偉','沒辦法。工廠欠了一大筆債……我只好到外面去打零工。'),
+ T('志偉','說不怕妳笑——我今天其實是走路過來的。連公車錢，我也得省下來。'),
+ N('他苦笑著，手指不自覺地摩挲著袖口的破邊。'),
+ T('志偉','其實，今天會來跟妳碰面……也是想告訴妳一聲——以後，我不想再跟兒子見面了。'),
+ S('shufen_a','l'),
+ T('淑芬','為什麼？！我什麼都沒跟你要！'),
+ T('淑芬','我只是希望你可以盡一下做父親的義務——這樣也不行嗎？！'),
+ T('志偉','妳看看我的樣子！'),
+ T('志偉','妳覺得這樣……可以見兒子嗎？'),
+ CHOICE('淑芬看著眼前這個男人——',[
+  {t:'（……出一點治裝費，又如何。）',br:[I('（我幸災樂禍地想，前夫終於遭到了報應。）'),I('（但我仍希望給兒子一個父親的好印象。）')]},
+  {t:'（這種人，根本不配見小杰。）',br:[I('（我恨不得當面把他轟出去。）'),I('（可是……小杰昨晚還在練習，要唱給爸爸聽的歌。）')]}
+ ]),
+ S('shufen_s','l'),
+ N('淑芬見狀，從皮包裡掏出幾張鈔票。'),
+ T('淑芬','不然這樣好了。我這裡有三千塊——你買套新的衣服跟鞋子。'),
+ T('淑芬','今年父親節，繼續跟兒子碰面。'),
+ N('前夫毫不猶豫，迅速將錢收進了口袋，像是怕她反悔。'),
+ CG('cg_money'),
+ N('下個月的八八節，他一身光鮮亮麗地出現在兒子面前——依然還是那個工廠小開。'),
+ BG('resto'),M('daily'),
+ H('shufen_s'),H('ex_poor'),
+ S('ex_rich','l'),S('son_h','r'),
+ T('小杰','爸爸！父親節快樂！這是我畫的卡片，還有我的獎狀！'),
+ T('志偉','哎呀，我們小杰真棒！爸爸以你為榮！'),
+ N('兒子眼睛發亮地說著學校的趣事，像捧著全世界最珍貴的東西。'),
+ CG('cg_dinner'),
+ N('之後的每個月，淑芬會固定匯幾千塊給他，維持父親的「基本形象」。'),
+ N('前夫也樂得接受，覺得自己賺了一筆贍養費。'),
+ N('這齣戲，上演了好幾年。'),
+ CH('第六章','那年的父親節'),
+ BG('home_n'),M('memory'),
+ H('ex_rich'),H('son_h'),
+ N('每一年的父親節，淑芬看著兒子興高采烈地準備幫爸爸慶祝。'),
+ N('回家後，再開心地跟媽媽分享父子相聚的歡樂。'),
+ S('son_h','r'),
+ T('小杰','爸說我這次數學進步很多，下次要帶我去吃牛排！媽媽妳也一起來嘛——'),
+ T('淑芬','媽媽那天要加班。你跟爸爸好好玩。'),
+ I('（謝謝你，願意相信這個世界是完整的。）'),
+ N('他不知道，這一切是父母聯手演來欺騙他的戲。'),
+ N('直到那一晚——'),
+ N('兒子反常地嘟著嘴回家，非常地不高興。'),
+ S('son_s','r'),
+ T('淑芬','怎麼啦？'),
+ T('小杰','……媽，爸爸說他要出國做生意。'),
+ T('小杰','以後，不能常跟我碰面了。'),
+ N('淑芬愣了一下。然後，一股說不清是失望還是解脫的情緒，慢慢浮了上來。'),
+ I('（……跑了。果然還是忍不住了，跑了。）'),
+ I('（他還是以前那個渣男。）'),
+ T('淑芬','有什麼關係？反正一直以來，都只有我們兩個過而已，不是嗎？'),
+ T('小杰','媽！媽！妳聽我說啦——'),
+ T('小杰','爸說，等他到了那邊以後，會再跟我視訊傳訊息！'),
+ T('小杰','他還答應我……要寄明信片給我欸！'),
+ N('兒子天真地笑了笑，眼睛裡又亮了起來。'),
+ T('淑芬','……他到底是去哪一國？'),
+ T('小杰','爸爸只說，他要去東南亞做生意。'),
+ T('小杰','我問他去哪一國，他都不跟我說！'),
+ N('之後，前夫再也沒有出現。'),
+ CH('第七章','高棉的微笑'),
+ M('tension'),
+ N('取而代之的，是社群軟體上零星的訊息——'),
+ N('以及幾張，從很遠很遠的地方，寄來的吳哥窟明信片。'),
+ CARD(true,'bayon','CAMBODIA ・ 高棉的微笑'),SFX('recv'),
+ N('明信片上，是巨大的石造面孔，一座接一座，從蒼綠的叢林裡浮出來。'),
+ Q('「小杰：這邊風景很好、物價便宜，就是天氣炎熱，環境不好。」'),
+ Q('「剛去的時候水土不服，拉了幾天的肚子。在天哥的照顧下，慢慢恢復了。——爸爸」'),
+ CARD(true,'angkor2','CAMBODIA ・ 吳哥窟的落日'),
+ N('另一張明信片上，吳哥窟的五座石塔，靜靜浸在落日裡。'),
+ CG('cg_tian'),
+ N('「天哥」，是金邊一間中餐館的老闆。對剛去那邊的華人都很熱情。'),
+ N('從照片上看來，是一個身形略胖的老實人。'),
+ H('son_s'),S('son_h','c'),
+ T('小杰','媽！媽媽妳看！這個石頭臉好酷喔！這叫——高棉的微笑！'),
+ T('小杰','等我大學放暑假，我要去那邊自助旅行！我要去找爸爸玩！'),
+ T('小杰','有那麼多的台灣人在那，一定是個好地方！'),
+ N('淑芬接過明信片，盯著那張巨大的石臉。'),
+ CG('bayon'),
+ I('（奇怪……這個微笑……）'),
+ I('（嘴角，好像是往下垂的……）'),
+ N('她揉了揉眼睛。再看一次。似乎是眼花了。'),
+ N('可是心中，突然升起了一股不祥的預感。'),
+ H('son_h'),S('shufen_s','l'),S('son_s','r'),
+ T('淑芬','不如……我們先去泰國玩吧！跟外公外婆一起去！'),
+ T('小杰','可是我想找爸爸！'),
+ T('小杰','……柬埔寨那裡不好嗎？'),
+ CHOICE('淑芬向兒子笑笑——',[
+  {t:'「沒有不好，只是不太適合小孩子玩。」',br:[N('她笑笑地，把明信片收了起來。')]},
+  {t:'「那裡很危險，絕對不可以去！」',br:[N('小杰被嚇了一跳，眼眶紅了。'),N('淑芬這才意識到自己聲音太大了，趕緊放軟了語氣。'),T('淑芬','……沒有不好。只是，不太適合小孩子玩。')]}
+ ]),
+ T('淑芬','好了，快去洗澡，水都要涼了。'),
+ H('son_s'),CARD(false),
+ N('浴室傳來嘩啦啦的水聲。淑芬打開書桌前的筆電，與前夫傳訊息。'),
+ CH('第八章','深夜的訊息'),
+ BG('study'),M('tension'),
+ H('shufen_s'),
+ CHAT([
+  {w:'淑芬',t:'你還好吧？可不要騙兒子喔！'},
+  {w:'志偉',t:'我很好。'},
+  {w:'志偉',t:'現在在金邊一家旅遊公司當事務員，負責接待一些華人大老闆。'},
+  {w:'志偉',t:'薪水比在台灣高多了，我真後悔沒有早點來這裡！'},
+  {w:'淑芬',t:'所以，明年的父親節，你會回來跟兒子一起過嗎？'},
+  {w:'志偉',t:'當然會啊！'},
+  {w:'志偉',t:'再告訴妳一個好消息——公司發展不錯，業務要擴展到西港市去了。'},
+  {w:'志偉',t:'下個月我也要搬去西港住。妳幫我跟兒子說聲對不起，到時我再寄禮物給他。'},
+  {w:'淑芬',t:'好啊。'},
+  {w:'淑芬',t:'你自己一個人在那要好好照顧自己，不要讓你老婆、媽媽、兒子擔心你喔。'}
+ ]),
+ N('淑芬留完最後一句話後，關上筆電。'),
+ N('螢幕的光，從蓋起的縫隙裡漏出來，像一條蒼白細長的線。'),
+ I('（西港……）'),
+ N('她想起新聞裡反覆出現的那些字眼。'),
+ N('——詐騙。園區。被扣押的護照。回不來的人。'),
+ N('也想起那張明信片上，嘴角下垂的微笑。'),
+ FX('flash'),
+ I('（……明年，應該不用再過父親節了吧。）'),
+ FX('black'),
+ {t:'end'}
+];
+/* ============ 音樂引擎 ============ */
+let ctx=null,master=null,musicBus=null,sfxBus=null,delaySend=null,playing=null,musicOn=true,sfxOn=true,musicStarted=false;
+function initAudio(){
+ try{
+  if(ctx){if(ctx.state==='suspended')ctx.resume();return;}
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  ctx=new AC();
+  master=ctx.createGain();master.gain.value=(+(store.get('vd_vol'))||80)/100;master.connect(ctx.destination);
+  musicBus=ctx.createGain();musicBus.gain.value=musicOn?1:0;musicBus.connect(master);
+  sfxBus=ctx.createGain();sfxBus.connect(master);
+  const dl=ctx.createDelay(1);dl.delayTime.value=.38;
+  const fb=ctx.createGain();fb.gain.value=.32;
+  const fl=ctx.createBiquadFilter();fl.type='lowpass';fl.frequency.value=2400;
+  dl.connect(fb);fb.connect(fl);fl.connect(dl);dl.connect(musicBus);
+  delaySend=ctx.createGain();delaySend.gain.value=.5;delaySend.connect(dl);
+ }catch(e){}
+}
+function piano(t,f,d,v,dest){
+ try{
+  const o1=ctx.createOscillator(),o2=ctx.createOscillator(),g=ctx.createGain(),g2=ctx.createGain(),flt=ctx.createBiquadFilter();
+  o1.type='triangle';o1.frequency.value=f;o2.type='sine';o2.frequency.value=f*2;g2.gain.value=.35;
+  flt.type='lowpass';flt.frequency.value=Math.min(f*6,4500);
+  o1.connect(g);o2.connect(g2);g2.connect(g);g.connect(flt);flt.connect(dest);
+  const s=ctx.createGain();s.gain.value=.18*v;g.connect(s);s.connect(delaySend);
+  const vv=v*.5;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vv,t+.008);
+  g.gain.exponentialRampToValueAtTime(.0001,t+Math.max(d,.3)*1.15+.4);
+  o1.start(t);o2.start(t);o1.stop(t+d+1.6);o2.stop(t+d+1.6);
+ }catch(e){}
+}
+function pad(t,f,d,v,dest){
+ try{
+  [f*.998,f*1.004].forEach(ff=>{
+   const o=ctx.createOscillator(),flt=ctx.createBiquadFilter(),g=ctx.createGain();
+   o.type='sawtooth';o.frequency.value=ff;flt.type='lowpass';flt.frequency.value=700;flt.Q.value=.6;
+   o.connect(flt);flt.connect(g);g.connect(dest);
+   const vv=v*.16;
+   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vv,t+Math.min(.6,d*.3));
+   g.gain.setValueAtTime(vv,t+d*.6);g.gain.linearRampToValueAtTime(0,t+d);
+   o.start(t);o.stop(t+d+.1);
+  });
+ }catch(e){}
+}
+function bassN(t,f,d,v,dest){
+ try{
+  const o=ctx.createOscillator(),o2=ctx.createOscillator(),g=ctx.createGain(),g2=ctx.createGain();
+  o.type='sine';o.frequency.value=f;o2.type='triangle';o2.frequency.value=f;g2.gain.value=.4;
+  o.connect(g);o2.connect(g2);g2.connect(g);g.connect(dest);
+  const vv=v*.5;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vv,t+.03);
+  g.gain.setTargetAtTime(.0001,t+d*.7,.25);
+  o.start(t);o2.start(t);o.stop(t+d+1);o2.stop(t+d+1);
+ }catch(e){}
+}
+function playVoice(e,when,dest){
+ const f=440*Math.pow(2,(e.m-69)/12);
+ if(e.i==='piano')piano(when,f,e.d,e.v,dest);
+ else if(e.i==='pad')pad(when,f,e.d,e.v,dest);
+ else bassN(when,f,e.d,e.v,dest);
+}
+function mkTitle(){
+ const ev=[];
+ const roots=[50,46,43,45,50,46,43,45];
+ const chords=[[62,65,69],[58,62,65],[55,58,62],[57,61,64],[62,65,69],[58,62,65],[55,58,62],[57,61,64]];
+ for(let bar=0;bar<8;bar++){
+  const b0=bar*3;
+  ev.push({b:b0,m:roots[bar]-12,d:2.6,v:.5,i:'bass'});
+  for(const s of[1,2])for(let k=0;k<3;k++)ev.push({b:b0+s,m:chords[bar][k],d:1.5,v:.16,i:'pad'});
+ }
+ const mel=[[0,69,1],[1,72,1],[2,74,1.8],[3,73,1],[4,72,1],[5,69,1.8],[6,67,1],[7,70,1],[8,72,1.8],[9,74,1],[10,75,1],[11,74,1.8],[12,72,1],[13,69,1],[14,67,1.8],[15,65,1],[16,67,1],[17,69,1.8],[18,70,1],[19,69,1],[20,67,1.8],[21,65,1],[22,64,1],[23,62,2.2]];
+ for(const x of mel)ev.push({b:x[0],m:x[1],d:x[2],v:.55,i:'piano'});
+ return{bpm:84,loop:24,ev:ev.sort((x,y)=>x.b-y.b)};
+}
+function mkDaily(){
+ const ev=[];
+ const bass=[40,43,45,41];
+ const arp=[[60,64,67,64],[55,59,62,59],[57,60,64,60],[53,57,60,57]];
+ for(let bar=0;bar<4;bar++){
+  const b0=bar*4;
+  ev.push({b:b0,m:bass[bar],d:3.6,v:.45,i:'bass'});
+  for(let k=0;k<4;k++)ev.push({b:b0+k,m:arp[bar][k],d:.9,v:.24,i:'piano'});
+ }
+ const mel=[[0,67,1],[1,69,1],[2,72,1.7],[4,71,1],[5,69,1],[6,67,1.7],[8,69,1],[9,72,1],[10,76,1.7],[12,74,1],[13,72,1],[14,71,2.4]];
+ for(const x of mel)ev.push({b:x[0],m:x[1],d:x[2],v:.5,i:'piano'});
+ return{bpm:92,loop:16,ev:ev.sort((x,y)=>x.b-y.b)};
+}
+function mkMemory(){
+ const ev=[];
+ const bars=[[45,[57,60,64]],[41,[53,57,60]],[38,[50,53,57]],[40,[52,56,59]]];
+ for(let bar=0;bar<4;bar++){
+  const b0=bar*4;
+  ev.push({b:b0,m:bars[bar][0],d:3.8,v:.4,i:'bass'});
+  for(const m of bars[bar][1])ev.push({b:b0,m,d:3.8,v:.14,i:'pad'});
+ }
+ const mel=[[0,69,2.6],[4,72,2.6],[8,71,2.6],[12,69,3.4]];
+ for(const x of mel)ev.push({b:x[0],m:x[1],d:x[2],v:.5,i:'piano'});
+ const echo=[[2,76,1.2],[6,74,1.2],[10,72,1.2],[14,71,1.6]];
+ for(const x of echo)ev.push({b:x[0],m:x[1],d:x[2],v:.14,i:'piano'});
+ return{bpm:62,loop:16,ev:ev.sort((x,y)=>x.b-y.b)};
+}
+function mkHope(){
+ const ev=[];
+ const bass=[43,40,48,50];
+ const arp=[[55,59,62,59],[52,55,59,55],[60,64,67,64],[62,66,69,66]];
+ for(let bar=0;bar<4;bar++){
+  const b0=bar*4;
+  ev.push({b:b0,m:bass[bar],d:3.6,v:.45,i:'bass'});
+  for(let k=0;k<4;k++)ev.push({b:b0+k,m:arp[bar][k],d:.9,v:.26,i:'piano'});
+ }
+ const mel=[[0,67,1],[1,69,1],[2,71,1.7],[4,74,1],[5,71,1],[6,69,1.7],[8,67,1],[9,71,1],[10,74,1.7],[12,79,1],[13,78,1],[14,74,2.4]];
+ for(const x of mel)ev.push({b:x[0],m:x[1],d:x[2],v:.5,i:'piano'});
+ return{bpm:100,loop:16,ev:ev.sort((x,y)=>x.b-y.b)};
+}
+function mkTension(){
+ const ev=[];
+ ev.push({b:0,m:38,d:15.5,v:.3,i:'pad'});
+ ev.push({b:0,m:45,d:15.5,v:.16,i:'pad'});
+ ev.push({b:8,m:50,d:7.5,v:.09,i:'pad'});
+ ev.push({b:8,m:51,d:7.5,v:.09,i:'pad'});
+ ev.push({b:0,m:38,d:2,v:.4,i:'bass'});
+ ev.push({b:8,m:38,d:2,v:.35,i:'bass'});
+ ev.push({b:12,m:35,d:2,v:.35,i:'bass'});
+ const pings=[[2,84,1,.12],[6.5,87,.8,.1],[11,82,1,.12],[14.5,89,.7,.09]];
+ for(const x of pings)ev.push({b:x[0],m:x[1],d:x[2],v:x[3],i:'piano'});
+ return{bpm:40,loop:16,ev:ev.sort((x,y)=>x.b-y.b)};
+}
+function mkEnding(){
+ const ev=[];
+ ev.push({b:0,m:38,d:23.5,v:.28,i:'pad'});
+ ev.push({b:0,m:45,d:23.5,v:.14,i:'pad'});
+ ev.push({b:0,m:38,d:3,v:.4,i:'bass'});
+ ev.push({b:12,m:35,d:3,v:.35,i:'bass'});
+ const mel=[[0,69,2],[3,72,2],[6,74,3],[12,73,2],[15,72,2],[18,69,4]];
+ for(const x of mel)ev.push({b:x[0],m:x[1],d:x[2],v:.45,i:'piano'});
+ ev.push({b:10,m:84,d:1,v:.1,i:'piano'});
+ return{bpm:48,loop:24,ev:ev.sort((x,y)=>x.b-y.b)};
+}
+const TRACKS={title:mkTitle,daily:mkDaily,memory:mkMemory,hope:mkHope,tension:mkTension,ending:mkEnding};
+function playMusic(name){
+ try{
+  if(!ctx||!TRACKS[name])return;
+  if(playing){const old=playing;playing=null;clearInterval(old.timer);old.gain.gain.setTargetAtTime(0,ctx.currentTime,.5);setTimeout(()=>{try{old.gain.disconnect();}catch(e){}},3000);}
+  const track=TRACKS[name]();
+  const gain=ctx.createGain();gain.gain.value=0;gain.connect(musicBus);
+  gain.gain.setTargetAtTime(.9,ctx.currentTime,.6);
+  const st={track,gain,i:0,loopBase:ctx.currentTime+.15,spb:60/track.bpm,timer:null};
+  playing=st;
+  const sched=()=>{
+   try{
+    const ahead=ctx.currentTime+.6;let guard=0;
+    while(guard++<600){
+     const e=st.track.ev[st.i];const tAbs=st.loopBase+e.b*st.spb;
+     if(tAbs>ahead)break;
+     playVoice(e,Math.max(tAbs,ctx.currentTime+.02),st.gain);
+     st.i++;
+     if(st.i>=st.track.ev.length){st.i=0;st.loopBase+=st.track.loop*st.spb;}
+    }
+   }catch(e){}
+  };
+  st.timer=setInterval(sched,140);sched();
+  $('musicNote').textContent='♪ '+MUSIC_NAMES[name];
+ }catch(e){}
+}
+function sfx(k){
+ try{
+  if(!ctx||!sfxOn)return;
+  const t=ctx.currentTime;
+  const mk=(f,d,v,type,slide)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(sfxBus);o.start(t);o.stop(t+d+.05);};
+  if(k==='bell'){mk(1244,.6,.12);mk(1866,.9,.06);}
+  else if(k==='select'){mk(784,.12,.1,'triangle');setTimeout(()=>mk(1175,.2,.1,'triangle'),90);}
+  else if(k==='send'){mk(1318,.09,.1);setTimeout(()=>mk(1760,.12,.09),70);}
+  else if(k==='recv'){mk(987,.1,.1);setTimeout(()=>mk(784,.14,.09),80);}
+  else if(k==='chime'){mk(784,.5,.08,'triangle');setTimeout(()=>mk(1175,.8,.07,'triangle'),160);}
+  else if(k==='hit'){mk(90,.4,.3,'sine',45);}
+ }catch(e){}
+}
+/* ============ 引擎狀態 ============ */
+let idx=0,queue=[],flags={},mode='title',awaiting=false,autoOn=false,skipOn=false;
+let autoTimer=null,chTimer=null,chatMsgs=[],chatShown=0;
+let bgFront=$('bgA'),bgBack=$('bgB');
+const spriteEls={},spriteTimers={},SPRPROC={};
+const SAVEKEY='vd_fday_save';
+function saveGame(i){store.set(SAVEKEY,JSON.stringify({i,flags}));}
+function unlockCG(id){
+ try{
+  const a=JSON.parse(store.get('vd_cgs')||'[]');
+  if(a.indexOf(id)<0){a.push(id);store.set('vd_cgs',JSON.stringify(a));}
+ }catch(e){}
+}
+function setBg(id,instant){
+ const url=BGS[id];if(!url)return;
+ const img='url("'+url+'"), '+(GRADS[id]||'none');
+ bgBack.style.backgroundImage=img;
+ if(instant)bgBack.style.transition='none';
+ void bgBack.offsetWidth;
+ bgBack.classList.add('on');bgFront.classList.remove('on');
+ const t=bgFront;bgFront=bgBack;bgBack=t;
+ if(instant)requestAnimationFrame(()=>{bgFront.style.transition='';bgBack.style.transition='';});
+ stage.classList.toggle('sepia',id==='old_home');
+}
+/* ---- 立繪管理：同角色表情直接切換、同位置互斥，避免疊影 ---- */
+function killSprite(id){
+ const el=spriteEls[id];
+ if(!el)return;
+ if(spriteTimers[id]){clearTimeout(spriteTimers[id]);delete spriteTimers[id];}
+ el.remove();
+ delete spriteEls[id];
+}
+function showSprite(id,pos,instant){
+ const proc=SPRPROC[id];
+ if(proc===undefined)return;
+ const grp=CHAR_OF[id];
+ Object.keys(spriteEls).forEach(other=>{
+  if(other===id)return;
+  const el=spriteEls[other];
+  if(!el)return;
+  const sameGrp=grp&&CHAR_OF[other]===grp;
+  const samePos=el.classList.contains('pos-'+pos);
+  if(sameGrp||samePos)killSprite(other);
+ });
+ let el=spriteEls[id];
+ if(!el){
+  el=document.createElement('img');
+  el.className='sprite';el.alt='';el.decoding='async';
+  if(proc===null){el.src=IMGS[id];el.classList.add('multiply');}
+  else el.src=proc;
+  el.onerror=()=>{if(spriteEls[id]===el)killSprite(id);};
+  spriteEls[id]=el;
+  $('spriteLayer').appendChild(el);
+ }else if(spriteTimers[id]){
+  clearTimeout(spriteTimers[id]);delete spriteTimers[id];
+ }
+ el.classList.remove('pos-l','pos-c','pos-r');
+ el.classList.add('pos-'+pos);
+ if(instant){el.style.transition='none';el.classList.add('on');void el.offsetWidth;el.style.transition='';}
+ else requestAnimationFrame(()=>el.classList.add('on'));
+}
+function hideSprite(id,instant){
+ const el=spriteEls[id];if(!el)return;
+ if(instant){killSprite(id);return;}
+ if(spriteTimers[id])clearTimeout(spriteTimers[id]);
+ el.classList.remove('on');
+ spriteTimers[id]=setTimeout(()=>{
+  delete spriteTimers[id];
+  if(spriteEls[id]===el&&!el.classList.contains('on')){el.remove();delete spriteEls[id];}
+ },380);
+}
+function setFocus(name){
+ const keys=name?(WHO_SPRITE[name]||[]):null;
+ for(const id in spriteEls)spriteEls[id].classList.toggle('dim',!!keys&&!keys.includes(id));
+}
+function setCard(on,img,cap){
+ if(on&&img){$('pcImg').src=IMGS[img];$('pcCap').textContent=cap||'CAMBODIA';unlockCG(img);}
+ $('postcard').classList.toggle('on',on);
+}
+function doFx(k){
+ if(k==='shake'){stage.classList.add('shake');setTimeout(()=>stage.classList.remove('shake'),600);}
+ else if(k==='flash'){const f=$('fxDark');f.style.transition='none';f.style.background='#fff';f.style.opacity=.75;void f.offsetWidth;f.style.transition='opacity .9s ease';f.style.opacity=0;setTimeout(()=>{f.style.background='#000';},1000);}
+ else if(k==='black'){$('fxDark').style.opacity=1;}
+ else if(k==='clear'){$('fxDark').style.opacity=0;}
+}
+/* ---- 文字 ---- */
+let typeTimer=null,fullText='',typePos=0,pauseTicks=0,typing=false;
+function typeText(str){
+ clearInterval(typeTimer);fullText=str;typePos=0;pauseTicks=0;typing=true;
+ $('contArrow').classList.remove('on');
+ const ta=$('textArea');ta.textContent='';
+ typeTimer=setInterval(()=>{
+  if(skipOn){clearInterval(typeTimer);ta.textContent=fullText;finishType();return;}
+  if(pauseTicks>0){pauseTicks--;return;}
+  if(typePos>=fullText.length){finishType();return;}
+  const ch=fullText[typePos++];ta.textContent+=ch;
+  if('…。！？—'.indexOf(ch)>=0)pauseTicks=5;else if('，、；：'.indexOf(ch)>=0)pauseTicks=2;
+  if(typePos>=fullText.length)finishType();
+ },26);
+}
+function completeText(){clearInterval(typeTimer);$('textArea').textContent=fullText;finishType();}
+function finishType(){
+ if(!typing)return;
+ typing=false;awaiting=true;clearInterval(typeTimer);
+ $('contArrow').classList.add('on');
+ if(autoOn||skipOn){clearTimeout(autoTimer);autoTimer=setTimeout(()=>advance(),skipOn?240:1600);}
+}
+function logPush(ev){
+ try{
+  const d=document.createElement('div');
+  if(ev.who){const s=document.createElement('span');s.className='logName';s.style.color=WHO_COLORS[ev.who]||'#d8b36a';s.textContent=ev.inner?ev.who+'（心聲）':ev.who;d.appendChild(s);}
+  d.appendChild(document.createTextNode(ev.txt));
+  $('logBody').appendChild(d);
+ }catch(e){}
+}
+function runText(ev){
+ mode='text';awaiting=false;
+ const np=$('namePlate'),ta=$('textArea');
+ if(ev.who){np.style.display='block';np.textContent=ev.inner?ev.who+'（心聲）':ev.who;np.style.background='linear-gradient(135deg,#6b5327,'+(WHO_COLORS[ev.who]||'#d8b36a')+')';}
+ else np.style.display='none';
+ ta.className=ev.inner?'inner':ev.quote?'quote':ev.narr?'narr':'';
+ setFocus(ev.who||null);
+ logPush(ev);
+ typeText(ev.txt);
+}
+/* ---- 流程 ---- */
+function pump(){
+ try{
+  let ev;
+  if(queue.length)ev=queue.shift();
+  else{saveGame(idx);ev=SCRIPT[idx++];}
+  if(!ev)return;
+  switch(ev.t){
+   case 'bg':setBg(ev.id);pump();break;
+   case 'bgm':playMusic(ev.id);pump();break;
+   case 'show':showSprite(ev.id,ev.pos);pump();break;
+   case 'hide':hideSprite(ev.id);pump();break;
+   case 'card':setCard(ev.on,ev.img,ev.cap);pump();break;
+   case 'fx':doFx(ev.k);pump();break;
+   case 'sfx':sfx(ev.k);pump();break;
+   case 'chapter':showChapter(ev);break;
+   case 'text':runText(ev);break;
+   case 'choice':showChoice(ev);break;
+   case 'chat':openChat(ev.msgs);break;
+   case 'cg':showCG(ev.id);break;
+   case 'end':showEnd();break;
+   default:pump();
+  }
+ }catch(err){
+  if(queue.length===0)idx++;
+  setTimeout(pump,60);
+ }
+}
+function advance(){
+ if(mode==='text'){if(typing)completeText();else if(awaiting){clearTimeout(autoTimer);awaiting=false;pump();}}
+ else if(mode==='chapter')closeChapter();
+ else if(mode==='cg')closeCG();
+ else if(mode==='chat')chatClick();
+}
+function showChapter(ev){
+ mode='chapter';
+ $('chNum').textContent=ev.n;$('chTitle').textContent=ev.s;
+ const c=$('chapterCard');c.style.display='flex';c.classList.remove('show');void c.offsetWidth;c.classList.add('show');
+ sfx('chime');
+ clearTimeout(chTimer);
+ chTimer=setTimeout(closeChapter,skipOn?700:2600);
+}
+function closeChapter(){
+ if(mode!=='chapter')return;
+ clearTimeout(chTimer);mode='wait';
+ $('chapterCard').classList.remove('show');
+ setTimeout(()=>{$('chapterCard').style.display='none';pump();},460);
+}
+function showChoice(ev){
+ mode='choice';
+ $('choicePrompt').textContent=ev.prompt||'——';
+ const box=$('choiceBtns');box.innerHTML='';
+ ev.opts.forEach(o=>{
+  const b=document.createElement('button');b.className='choiceBtn';b.textContent=o.t;
+  b.onclick=()=>{b.blur();sfx('select');$('choiceLayer').style.display='none';if(o.br&&o.br.length)queue.push.apply(queue,o.br);pump();};
+  box.appendChild(b);
+ });
+ $('choiceLayer').style.display='flex';
+}
+function openChat(msgs){
+ mode='chat';chatMsgs=msgs;chatShown=0;
+ $('chatBody').innerHTML='';$('chatLayer').style.display='flex';
+ $('chatHint').textContent='點擊顯示訊息 ▼';
+ if(skipOn){while(chatShown<msgs.length)addBubble();$('chatHint').textContent='點擊繼續 ▼';}
+}
+function addBubble(){
+ const m=chatMsgs[chatShown++];
+ const d=document.createElement('div');
+ d.className='bubble '+(m.w==='淑芬'?'me':'him');
+ const s=document.createElement('span');s.className='bw';s.textContent=m.w;
+ d.appendChild(s);d.appendChild(document.createTextNode(m.t));
+ $('chatBody').appendChild(d);$('chatBody').scrollTop=$('chatBody').scrollHeight;
+ sfx(m.w==='淑芬'?'send':'recv');
+}
+function chatClick(){
+ if(chatShown<chatMsgs.length){addBubble();if(chatShown>=chatMsgs.length)$('chatHint').textContent='點擊繼續 ▼';}
+ else{$('chatLayer').style.display='none';pump();}
+}
+function showCG(id){
+ mode='cg';
+ $('cgImg').src=IMGS[id]||IMGS.bayon;
+ unlockCG(id);
+ $('cgLayer').classList.add('on');
+}
+function closeCG(){if(mode!=='cg')return;$('cgLayer').classList.remove('on');mode='wait';setTimeout(pump,300);}
+/* ---- CG 鑑賞 ---- */
+function buildGallery(){
+ const grid=$('galGrid');grid.innerHTML='';
+ let un=[];try{un=JSON.parse(store.get('vd_cgs')||'[]');}catch(e){}
+ CG_LIST.forEach(c=>{
+  const d=document.createElement('div');
+  const ok=un.indexOf(c.id)>=0;
+  d.className='galItem'+(ok?'':' locked');
+  if(ok){
+   const im=document.createElement('img');im.src=IMGS[c.id];im.alt=c.name;im.loading='lazy';
+   d.appendChild(im);
+   d.onclick=()=>{$('galViewImg').src=IMGS[c.id];$('galViewCap').textContent=c.name;$('galView').style.display='flex';};
+  }else{
+   const lk=document.createElement('div');lk.className='galLock';lk.textContent='？？？';
+   d.appendChild(lk);
+  }
+  const nm=document.createElement('div');nm.className='galName';nm.textContent=ok?c.name:'未解鎖';
+  d.appendChild(nm);
+  grid.appendChild(d);
+ });
+}
+$('btnGallery').onclick=e=>{e.stopPropagation();buildGallery();$('gallery').style.display='flex';};
+$('galClose').onclick=function(){$('gallery').style.display='none';this.blur();};
+$('galView').onclick=()=>{$('galView').style.display='none';};
+/* ---- 結局 ---- */
+const ENDLINES=['那年之後，沒有卡片，沒有獎狀，','也沒有人再敲響這個家的門。','通訊軟體的頭像，再也沒有亮過。','小杰偶爾還是會問：「爸爸什麼時候回來？」','淑芬總是笑著說：「爸爸在很遠很遠的地方，很努力很努力地工作。」','至於那張明信片——','被收進了抽屜的最底層。','只是偶爾，在深夜裡，','她還是會想起那個微笑。','……嘴角，似乎是往下垂的。'];
+function showEnd(){
+ mode='end';
+ $('textBox').style.display='none';
+ const es=$('endScreen');es.style.display='flex';es.innerHTML='';
+ const wrap=document.createElement('div');wrap.className='es-inner';
+ let d=0.6;
+ ENDLINES.forEach(l=>{const p=document.createElement('div');p.className='endline';p.textContent=l;p.style.animationDelay=d+'s';wrap.appendChild(p);d+=1.5;});
+ const end=document.createElement('div');end.className='es-end';end.textContent='— 消失的父親節 ・ END —';end.style.animationDelay=d+'s';wrap.appendChild(end);d+=2;
+ const note=document.createElement('div');note.className='es-note';note.innerHTML='父親的「出國做生意」、對目的地諱莫如深、金邊的「天哥」、西港的「新工作」……<br>小說以懸念收尾，指向那些年被困在海外詐騙園區、回不來的人們。<br>「明年應該不用再過父親節了」——淑芬這句話，是解脫，或許也是最殘酷的預言。';note.style.animationDelay=d+'s';wrap.appendChild(note);d+=2;
+ const btns=document.createElement('div');btns.className='es-btns';btns.style.animationDelay=d+'s';
+ const b1=document.createElement('button');b1.textContent='重新開始';b1.onclick=()=>{b1.blur();es.style.display='none';startNew();};
+ const b2=document.createElement('button');b2.textContent='回到標題';b2.onclick=()=>{b2.blur();es.style.display='none';toTitle();};
+ btns.appendChild(b1);btns.appendChild(b2);wrap.appendChild(btns);
+ es.appendChild(wrap);
+}
+/* ---- 開始 / 讀檔 ---- */
+function resetVisual(){
+ Object.keys(spriteEls).forEach(killSprite);
+ $('spriteLayer').innerHTML='';
+ bgFront.classList.remove('on');bgBack.classList.remove('on');
+ stage.classList.remove('sepia');
+ $('fxDark').style.opacity=0;
+ setCard(false);$('cgLayer').classList.remove('on');$('choiceLayer').style.display='none';$('chatLayer').style.display='none';
+ $('chapterCard').style.display='none';$('logBody').innerHTML='';
+ $('textArea').textContent='';$('namePlate').style.display='none';$('contArrow').classList.remove('on');
+ clearInterval(typeTimer);clearTimeout(autoTimer);typing=false;awaiting=false;
+}
+function startNew(){
+ idx=0;queue=[];flags={};
+ resetVisual();
+ $('textBox').style.display='block';
+ mode='wait';
+ pump();
+}
+function resume(){
+ let s=null;try{s=JSON.parse(store.get(SAVEKEY)||'null');}catch(e){}
+ if(!s){startNew();return;}
+ flags=s.flags||{};idx=s.i||0;queue=[];
+ resetVisual();
+ let lastBgm=null;
+ for(let k=0;k<idx;k++){
+  const ev=SCRIPT[k];if(!ev)break;
+  switch(ev.t){
+   case 'bg':setBg(ev.id,true);break;
+   case 'show':showSprite(ev.id,ev.pos,true);break;
+   case 'hide':hideSprite(ev.id,true);break;
+   case 'card':setCard(ev.on,ev.img,ev.cap);break;
+   case 'fx':doFx(ev.k);break;
+   case 'bgm':lastBgm=ev.id;break;
+  }
+ }
+ if(lastBgm)playMusic(lastBgm);
+ $('textBox').style.display='block';
+ mode='wait';
+ pump();
+}
+function toTitle(){
+ resetVisual();
+ mode='title';
+ if(store.get(SAVEKEY))$('btnContinue').style.display='';
+ $('titleScreen').classList.remove('gone');
+}
+/* ---- 輸入 ---- */
+stage.addEventListener('click',e=>{
+ if(e.target.closest('[data-ui]'))return;
+ if(mode==='title')return;
+ advance();
+});
+$('chatLayer').addEventListener('click',e=>{e.stopPropagation();if(mode==='chat')chatClick();});
+document.addEventListener('keydown',e=>{
+ if(e.target&&e.target.tagName==='INPUT')return;
+ if(e.key===' '||e.key==='Enter'){
+  e.preventDefault();
+  if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+  if(mode!=='title')advance();
+ }
+ else if(e.key==='Escape'){$('logPanel').classList.remove('on');$('settings').style.display='none';$('gallery').style.display='none';$('galView').style.display='none';}
+});
+$('btnAuto').onclick=function(){autoOn=!autoOn;this.classList.toggle('active',autoOn);if(autoOn&&awaiting&&!typing){clearTimeout(autoTimer);autoTimer=setTimeout(()=>advance(),1200);}this.blur();};
+$('btnSkip').onclick=function(){skipOn=!skipOn;this.classList.toggle('active',skipOn);if(skipOn){if(typing)completeText();else if(awaiting){clearTimeout(autoTimer);autoTimer=setTimeout(()=>advance(),200);}}this.blur();};
+$('btnLog').onclick=function(){$('logPanel').classList.toggle('on');this.blur();};
+$('logClose').onclick=function(){$('logPanel').classList.remove('on');this.blur();};
+$('btnSet').onclick=function(){$('settings').style.display=$('settings').style.display==='flex'?'none':'flex';this.blur();};
+$('btnTitle').onclick=function(){this.blur();if(confirm('要回到標題嗎？目前進度已自動保存。'))toTitle();};
+$('volRange').oninput=e=>{store.set('vd_vol',e.target.value);if(ctx&&master)master.gain.setTargetAtTime(e.target.value/100,ctx.currentTime,.1);};
+$('chkMusic').onchange=e=>{musicOn=e.target.checked;if(ctx&&musicBus)musicBus.gain.setTargetAtTime(musicOn?1:0,ctx.currentTime,.2);};
+$('chkSfx').onchange=e=>{sfxOn=e.target.checked;};
+$('titleScreen').addEventListener('click',()=>{initAudio();if(!musicStarted&&ctx){playMusic('title');musicStarted=true;}});
+$('btnStart').onclick=e=>{e.stopPropagation();initAudio();musicStarted=true;$('titleScreen').classList.add('gone');startNew();};
+$('btnContinue').onclick=e=>{e.stopPropagation();initAudio();musicStarted=true;$('titleScreen').classList.add('gone');resume();};
+/* ---- 立繪去背 & 預載 ---- */
+function keyOut(img){
+ try{
+  const w=img.naturalWidth,h=img.naturalHeight;
+  const MAX=1300,sc=Math.min(1,MAX/Math.max(w,h));
+  const cw=Math.max(1,Math.round(w*sc)),ch=Math.max(1,Math.round(h*sc));
+  const c=document.createElement('canvas');c.width=cw;c.height=ch;
+  const x=c.getContext('2d',{willReadFrequently:true});
+  x.drawImage(img,0,0,cw,ch);
+  const d=x.getImageData(0,0,cw,ch);
+  const p=d.data;
+  for(let i=0;i<p.length;i+=4){
+   const r=p[i],g=p[i+1],b=p[i+2];
+   const mn=r<g?(r<b?r:b):(g<b?g:b);
+   const mx=r>g?(r>b?r:b):(g>b?g:b);
+   if(mn>232&&mx-mn<28)p[i+3]=0;
+   else if(mn>198&&mx-mn<30)p[i+3]=(p[i+3]*(232-mn)/34)|0;
+  }
+  x.putImageData(d,0,0);
+  return c.toDataURL('image/png');
+ }catch(e){return null;}
+}
+function loadImg(url,cross,timeout){
+ return new Promise(res=>{
+  const im=new Image();
+  if(cross)im.crossOrigin='anonymous';
+  im.decoding='async';
+  const to=setTimeout(()=>{im.onload=null;im.onerror=null;im.src='';res(null);},timeout||12000);
+  im.onload=()=>{clearTimeout(to);res(im);};
+  im.onerror=()=>{clearTimeout(to);res(null);};
+  im.src=url;
+ });
+}
+let booted=false;
+function boot(){
+ if(booted)return;booted=true;
+ $('loading').classList.add('off');
+ if(store.get(SAVEKEY))$('btnContinue').style.display='';
+}
+async function preloadAll(){
+ const bgKeys=Object.keys(IMGS).filter(k=>SPRITE_IDS.indexOf(k)<0);
+ const total=bgKeys.length+SPRITE_IDS.length;let done=0;
+ const upd=()=>{const pc=Math.min(100,Math.round(100*done/total));$('ldFill').style.width=pc+'%';$('ldText').textContent='載入資源中… '+pc+'%';};
+ const tasks=[];
+ for(const k of bgKeys)tasks.push(loadImg(IMGS[k],false,12000).then(()=>{done++;upd();}));
+ for(const k of SPRITE_IDS)tasks.push(loadImg(IMGS[k],true,12000).then(im=>{
+  done++;upd();
+  if(!im){SPRPROC[k]=null;return;}
+  SPRPROC[k]=keyOut(im);
+ }));
+ await Promise.all(tasks);
+}
+$('pcImg').src=IMGS.bayon;
+$('titleScreen').style.backgroundImage='url("'+IMGS.title+'"), radial-gradient(100% 80% at 50% 20%,#1b2436 0%,#080a12 100%)';
+$('ldSkip').onclick=()=>boot();
+setTimeout(()=>{$('ldSkip').style.display='inline-block';},5000);
+setTimeout(boot,30000);
+preloadAll().then(boot).catch(boot);
+document.addEventListener('visibilitychange',()=>{if(ctx&&ctx.state==='running'&&!document.hidden)ctx.resume();});
+</script>
+</body>
+</html>
